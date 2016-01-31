@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layout_border"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginBottom="3dp">
+    android:layout_marginLeft="@dimen/list_horizontal_margin"
+    android:layout_marginRight="@dimen/list_horizontal_margin"
+    android:layout_marginTop="@dimen/list_vertical_margin"
+    android:layout_marginBottom="@dimen/list_vertical_margin">
     <LinearLayout
         android:layout_toLeftOf="@+id/itemArrow"
         android:layout_width="fill_parent"
@@ -19,11 +19,10 @@
             android:id="@+id/txtItemTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textSize="23sp"
+            android:layout_marginLeft="@dimen/list_horizontal_margin"
+            android:textSize="@dimen/title_text_size"
             android:fontFamily="sans-serif-light"
-            android:textColor="#BB000000"
-            android:text="Event 1"/>
+            android:textColor="@color/colorTextTitle"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -36,10 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:textSize="18sp"
+                android:textSize="@dimen/description_text_size"
                 android:fontFamily="sans-serif-light"
-                android:textColor="#88000000"
-                android:text="Event 1"
+                android:textColor="@color/colorTextDescription"
                 android:layout_weight="0.3"/>
             <ImageView
                 android:id="@+id/imgItemImage"

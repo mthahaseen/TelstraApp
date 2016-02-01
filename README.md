@@ -6,7 +6,8 @@ parse json data respectively.
 Implementation:
 - RecyclerView
 - GSON Parsing
-- Volley 
+- Volley
+- Swipe Refresh Layout
 
 Third Party Libraries:
 - Volley

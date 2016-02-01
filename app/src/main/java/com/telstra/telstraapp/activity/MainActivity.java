@@ -22,12 +22,10 @@ import com.telstra.telstraapp.common.AppConstants;
 import com.telstra.telstraapp.common.AppController;
 import com.telstra.telstraapp.common.ConnectionDetector;
 import com.telstra.telstraapp.model.Item;
+import com.telstra.telstraapp.model.ItemDetail;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "MainActivity";
     private SwipeRefreshLayout swipeRefreshLayout;
-    ConnectionDetector cd = new ConnectionDetector(this);
+    ConnectionDetector connectionDetector = new ConnectionDetector(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mRecyclerView.setLayoutManager(mLayoutManager);
         swipeRefreshLayout.setOnRefreshListener(this);
         //Check for data connection before making JSON Request
-        if(cd.isConnectingToInternet()){
+        if(connectionDetector.isConnectingToInternet()){
             pDialog.setMessage(AppConstants.MSG_LOADING);
             pDialog.show();
             pDialog.setCancelable(false);
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        if(cd.isConnectingToInternet()) {
+        if(connectionDetector.isConnectingToInternet()) {
             swipeRefreshLayout.setRefreshing(true);
             getItemData();
         }else{
@@ -84,21 +82,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onResponse(JSONObject response) {
                 if (response != null) {
-                    try {
-                        getSupportActionBar().setTitle(response.getString(AppConstants.TAG_TITLE));  //Update ActionBar title from json feed
                         GsonBuilder gsonBuilder = new GsonBuilder();
                         Gson gson = gsonBuilder.create();
-                        List<Item> lstData = new ArrayList<Item>();
-                        lstData = Arrays.asList(gson.fromJson(response.getJSONArray(AppConstants.TAG_ROWS).toString(), Item[].class));
-                        if(lstData!=null){
-                            populateRecyclerView(lstData);
+                        Item item = gson.fromJson(response.toString(), Item.class);
+                        getSupportActionBar().setTitle(item.getpTitle()); //Update ActionBar title
+                        if(item.getLstData()!=null){
+                            populateRecyclerView(item.getLstData());
                         }else{
                             Toast.makeText(MainActivity.this, AppConstants.TOAST_DATA_ERROR, Toast.LENGTH_LONG).show();
                         }
                         pDialog.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                    } catch (JSONException e) {
-                        e.printStackTrace();}
                 }else {
                     pDialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
@@ -121,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     /*
     This method populates the recycler with the data set got from URL
     */
-    public void populateRecyclerView(List<Item> lstData){
+    public void populateRecyclerView(List<ItemDetail> lstData){
         mAdapter = new ItemListAdapter(lstData, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
     }

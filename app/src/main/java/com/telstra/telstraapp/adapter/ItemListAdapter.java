@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.telstra.telstraapp.R;
 import com.telstra.telstraapp.model.Item;
+import com.telstra.telstraapp.model.ItemDetail;
 
 import java.util.List;
 
@@ -21,9 +22,12 @@ import java.util.List;
 
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemHolder> {
 
-    private List<Item> mDataset;
+    private List<ItemDetail> mDataset;
     private Context context;
 
+    /*
+    ViewHolder for the views present in the inflated layout
+    */
     public static class ItemHolder extends RecyclerView.ViewHolder{
         TextView txtTitle;
         TextView txtDesc;
@@ -36,11 +40,14 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemHo
         }
     }
 
-    public ItemListAdapter(List<Item> myDataset , Context context) {
+    public ItemListAdapter(List<ItemDetail> myDataset , Context context) {
         this.mDataset = myDataset;
         this.context = context;
     }
 
+    /*
+    Creates a new RecyclerView.ViewHolder and initializes some private fields to be used by RecyclerView.
+    */
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -49,6 +56,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemHo
         return dataObjectHolder;
     }
 
+    /*
+    Called by RecyclerView to display the data at the specified position.
+    */
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
         holder.txtTitle.setText(mDataset.get(position).getTitle());
@@ -61,6 +71,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemHo
         }
     }
 
+    /*
+    Returns the total number of items in the data set hold by the adapter.
+    */
     @Override
     public int getItemCount() {
         return mDataset.size();
